@@ -1,0 +1,419 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASM Tutorial Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #282c34;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 100%;
+            width: 90%;
+            margin: 20px;
+            padding: 20px;
+            background: #3c3f41;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
+        }
+        h1 {
+            text-align: center;
+            color: #61dafb;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #61dafb;
+        }
+        .question p {
+            font-size: 1.2em;
+            margin: 0;
+        }
+        .options label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            padding: 8px;
+            border-radius: 5px;
+            background: #444c50;
+            transition: background 0.3s, transform 0.3s;
+        }
+        .options label:hover {
+            background: #555a5f;
+            transform: scale(1.02);
+        }
+        #timer {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 1.5em;
+            background-color: #222;
+            padding: 8px 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .button-container button {
+            flex: 1;
+            margin: 0 5px;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            background-color: #61dafb;
+            color: #282c34;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .button-container button:hover {
+            background-color: #4f9bcd;
+            transform: scale(1.02);
+        }
+        .pagination {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .pagination button {
+            margin: 5px;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #444c50;
+            color: #ffffff;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .pagination button.selected {
+            background-color: #61dafb;
+            color: #282c34;
+        }
+        .pagination button:hover {
+            background-color: #555a5f;
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="timer">15:00</div>
+        <h1>ASM Tutorial Quiz</h1>
+        <div id="questionContainer"></div>
+
+        <div class="button-container">
+            <button id="previous">Previous</button>
+            <button id="next">Next</button>
+        </div>
+
+        <div class="pagination" id="pagination"></div>
+        
+        <div class="button-container">
+            <button id="submit">Submit Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        // Assuming you have the username saved in localStorage during login
+        const username = localStorage.getItem('username'); // Retrieve username from localStorage
+
+        const questions = [
+    {
+        question: "What is the first step in the problem-solving process?",
+        options: ["A) Write the program", "B) Understand the problem", "C) Test the program", "D) Develop an algorithm"],
+        answer: 1
+    },
+    {
+        question: "An algorithm is best described as a:",
+        options: ["A) Compiled program", "B) Code written in C", "C) Step-by-step procedure for solving a problem", "D) Mathematical model"],
+        answer: 2
+    },
+    {
+        question: "Which representation is NOT commonly used for an algorithm?",
+        options: ["A) Flowchart", "B) Pseudocode", "C) Java code", "D) UML"],
+        answer: 2
+    },
+    {
+        question: "What does pseudocode NOT do?",
+        options: ["A) Act as real code", "B) Represent an algorithm", "C) Improve readability", "D) Help with debugging"],
+        answer: 0
+    },
+    {
+        question: "In problem-solving, after writing the program, the next step is to:",
+        options: ["A) Understand the problem", "B) Test the program", "C) Formulate a model", "D) Write pseudocode"],
+        answer: 1
+    },
+    {
+        question: "Which of the following is NOT a characteristic of a good algorithm?",
+        options: ["A) Precision", "B) Finiteness", "C) Ambiguity", "D) Clarity"],
+        answer: 2
+    },
+    {
+        question: "A flowchart is primarily used to:",
+        options: ["A) Write code", "B) Represent the steps of an algorithm graphically", "C) Generate pseudocode", "D) Analyze the problem"],
+        answer: 1
+    },
+    {
+        question: "Who is considered the originator of the term algorithm?",
+        options: ["A) Dennis Ritchie", "B) Abu Ja'far al-Khowarizmi", "C) Brian Kernighan", "D) John von Neumann"],
+        answer: 1
+    },
+    {
+        question: "Which step involves verifying the program’s accuracy after it has been written?",
+        options: ["A) Testing the program", "B) Writing the program", "C) Developing an algorithm", "D) Formulating a model"],
+        answer: 0
+    },
+    {
+        question: "What is NOT a characteristic of a pseudocode?",
+        options: ["A) Written in a natural language", "B) Formal programming language", "C) Used as a blueprint for coding", "D) Enhances communication between programmers and non-programmers"],
+        answer: 1
+    },
+    {
+        question: "In C programming, what is used to terminate a statement?",
+        options: ["A) Colon", "B) Semicolon", "C) Comma", "D) Period"],
+        answer: 1
+    },
+    {
+        question: "The 'for' loop in C is used for:",
+        options: ["A) Decision making", "B) Sequential execution", "C) Repeating a block of code a specific number of times", "D) Exiting a program"],
+        answer: 2
+    },
+    {
+        question: "Which operator is used for logical AND in C?",
+        options: ["A) ||", "B) &&", "C) &", "D) %%"],
+        answer: 1
+    },
+    {
+        question: "What type of data type is used for storing integers in C?",
+        options: ["A) char", "B) float", "C) int", "D) double"],
+        answer: 2
+    },
+    {
+        question: "In C, which keyword is used to define a constant?",
+        options: ["A) const", "B) define", "C) static", "D) permanent"],
+        answer: 0
+    },
+    {
+        question: "What is the output of the statement printf(\"Hello, World!\");?",
+        options: ["A) Hello, World!", "B) printf(\"Hello, World!\");", "C) World!", "D) Error"],
+        answer: 0
+    },
+    {
+        question: "Which function is used to output data in C?",
+        options: ["A) scanf", "B) printf", "C) print", "D) output"],
+        answer: 1
+    },
+    {
+        question: "The ‘if’ statement is used in programming for:",
+        options: ["A) Looping", "B) Conditional execution", "C) Declaring variables", "D) Outputting data"],
+        answer: 1
+    },
+    {
+        question: "Which C language operator is used to determine the remainder?",
+        options: ["A) /", "B) %", "C) *", "D) &"],
+        answer: 1
+    },
+    {
+        question: "A switch statement in C is useful for:",
+        options: ["A) Iterating through loops", "B) Choosing between multiple values of a variable", "C) Declaring variables", "D) Performing arithmetic operations"],
+        answer: 1
+    },
+    {
+        question: "Which symbol is used for single-line comments in C?",
+        options: ["A) //", "B) /* */", "C) #", "D) %%"],
+        answer: 0
+    },
+    {
+        question: "What is a syntax error?",
+        options: ["A) An error in the logic of the program", "B) A misspelling in the program", "C) An error in the syntax or structure of the code", "D) A missing variable"],
+        answer: 2
+    },
+    {
+        question: "In problem-solving, the acronym CASE refers to:",
+        options: ["A) If-then-else statements", "B) Switch statements", "C) Generalized conditional statements", "D) Looping constructs"],
+        answer: 2
+    },
+    {
+        question: "Which step in the algorithm process ensures correctness and clarity?",
+        options: ["A) Input step", "B) Precision step", "C) Clarity step", "D) Definiteness"],
+        answer: 3
+    },
+    {
+        question: "In a while loop, the condition is checked:",
+        options: ["A) After the loop body", "B) Before the loop body", "C) At the end of the program", "D) At every other iteration"],
+        answer: 1
+    },
+    {
+        question: "What does the 'break' statement do?",
+        options: ["A) Stops the execution of a program", "B) Exits a loop or switch statement", "C) Continues to the next iteration of a loop", "D) Pauses the program"],
+        answer: "B"
+    },
+    {
+        question: "What type of loop is guaranteed to run at least once?",
+        options: ["A) for loop", "B) while loop", "C) do-while loop", "D) nested loop"],
+        answer: 2
+    },
+    {
+        question: "Which of the following is NOT a control structure in C?",
+        options: ["A) if-else", "B) switch", "C) loop", "D) printf"],
+        answer: 3
+    },
+    {
+        question: "In an algorithm, SEQUENCE represents:",
+        options: ["A) A decision-making process", "B) A series of steps executed in order", "C) A type of loop", "D) A mathematical function"],
+        answer: 1
+    },
+    {
+        question: "What is NOT a reserved keyword in C?",
+        options: ["A) if", "B) main", "C) include", "D) loop"],
+        answer: 3
+    },
+    {
+        question: "The concept of a 'nested if' in C is:",
+        options: ["A) Using multiple if statements separately", "B) Placing an if inside another if", "C) Using an if statement after a loop", "D) Setting up multiple conditions in a switch"],
+        answer: 1
+    },
+    {
+        question: "A 'for' loop with no condition:",
+        options: ["A) Runs indefinitely", "B) Gives an error", "C) Skips the loop", "D) Executes only once"],
+        answer: 0
+    },
+    {
+        question: "In C, '==' is used for:",
+        options: ["A) Assignment", "B) Equality comparison", "C) Declaring variables", "D) Incrementing"],
+        answer: 1
+    },
+    {
+        question: "What is the main advantage of using algorithms?",
+        options: ["A) They make programs larger", "B) They make solutions more efficient", "C) They increase program runtime", "D) They decrease the number of variables"],
+        answer: 1
+    },
+    {
+        question: "Which function reads input from the user?",
+        options: ["A) printf", "B) print", "C) scanf", "D) input"],
+        answer: 2
+    }
+];
+
+
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let timer;
+        let timeLeft = 15 * 60; // 15 minutes in seconds
+        let userName = localStorage.getItem('username') || '';
+
+        const questionContainer = document.getElementById('questionContainer');
+        const pagination = document.getElementById('pagination');
+        const timerDisplay = document.getElementById('timer');
+        const previousButton = document.getElementById('previous');
+        const nextButton = document.getElementById('next');
+        const submitButton = document.getElementById('submit');
+
+        function startTimer() {
+            timer = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    submitQuiz();
+                } else {
+                    timeLeft--;
+                }
+            }, 1000);
+        }
+
+        function loadQuestion() {
+            const question = questions[currentQuestionIndex];
+            questionContainer.innerHTML = `
+                <div class="question">
+                    <p>Q${currentQuestionIndex + 1}: ${question.question}</p>
+                </div>
+                <div class="options">
+                    ${question.options.map((option, index) => `
+                        <label>
+                            <input type="radio" name="answer" value="${index}" ${userAnswers[currentQuestionIndex] === index ? 'checked' : ''}>
+                            ${option}
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+
+            updatePagination();
+        }
+
+        function updatePagination() {
+            pagination.innerHTML = questions.map((_, index) => `
+                <button class="${index === currentQuestionIndex ? 'selected' : ''}" onclick="goToQuestion(${index})">${index + 1}</button>
+            `).join('');
+        }
+
+        function goToQuestion(index) {
+            saveAnswer();
+            currentQuestionIndex = index;
+            loadQuestion();
+        }
+
+        function saveAnswer() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            if (selectedOption) {
+                userAnswers[currentQuestionIndex] = parseInt(selectedOption.value);
+            }
+        }
+
+        function submitQuiz() {
+            saveAnswer(); // Save the last answer
+            clearInterval(timer);
+            const score = questions.reduce((acc, question, index) => {
+                return acc + (userAnswers[index] === question.answer ? 2 : 0);
+            }, 0);
+
+            alert(`Dear ${userName}, you scored ${score} out of ${questions.length * 2}.`);
+
+            // Redirect to the index page
+            window.location.href = 'index.html';
+        }
+
+        previousButton.addEventListener('click', () => {
+            saveAnswer();
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            saveAnswer();
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            }
+        });
+
+        submitButton.addEventListener('click', submitQuiz);
+
+        // Initialize the quiz
+        startTimer();
+        loadQuestion();
+
+        
+
+    </script>
+</body>
+</html>
