@@ -308,6 +308,81 @@
         question: "Which function reads input from the user?",
         options: ["A) printf", "B) print", "C) scanf", "D) input"],
         answer: 2
+    },
+    {
+        question: "Which operator is used to add two variables?",
+        options: ["A) &", "B) +", "C) =", "D) %"],
+        answer: 1
+    },
+    {
+        question: "An algorithm must produce:",
+        options: ["A) Multiple outputs", "B) Infinite steps", "C) A specific output", "D) No output"],
+        answer: 2
+    },
+    {
+        question: "In programming, debugging means:",
+        options: ["A) Running the program", "B) Writing pseudocode", "C) Finding and fixing errors", "D) Compiling the program"],
+        answer: 2
+    },
+    {
+        question: "The core control structures in pseudocode include all except:",
+        options: ["A) IF-THEN-ELSE", "B) WHILE", "C) LOOP-TILL", "D) FOR"],
+        answer: 2
+    },
+    {
+        question: "A do-while loop is ideal when:",
+        options: ["A) You don’t know how many times to loop", "B) The loop must run at least once", "C) You need a loop inside another loop", "D) You have a switch statement"],
+        answer: 1
+    },
+    {
+        question: "Which data type is used for single characters in C?",
+        options: ["A) int", "B) char", "C) double", "D) float"],
+        answer: 1
+    },
+    {
+        question: "The ‘return’ statement in C is used to:",
+        options: ["A) End a function and return a value to the calling function", "B) Exit a loop", "C) Print data to the console", "D) Declare variables"],
+        answer: 0
+    },
+    {
+        question: "Which logical operator is used to represent OR in C?",
+        options: ["A) &&", "B) ||", "C) !", "D) ^^"],
+        answer: 1
+    },
+    {
+        question: "Which keyword is used to declare a variable in C?",
+        options: ["A) define", "B) var", "C) int", "D) data"],
+        answer: 2
+    },
+    {
+        question: "In C, the default case in a switch statement is executed when:",
+        options: ["A) The condition matches a case", "B) The condition matches no case", "C) The switch statement is skipped", "D) The first case is always true"],
+        answer: 1
+    },
+    {
+        question: "What is the output of the code: printf('%d', 10 > 5);?",
+        options: ["A) 5", "B) 10", "C) 1", "D) 0"],
+        answer: 2
+    },
+    {
+        question: "Which of the following is NOT a valid identifier in C?",
+        options: ["A) total_amount", "B) 1value", "C) value1", "D) _temp"],
+        answer: 1
+    },
+    {
+        question: "In a flowchart, a decision is typically represented by:",
+        options: ["A) Rectangle", "B) Diamond", "C) Circle", "D) Oval"],
+        answer: 1
+    },
+    {
+        question: "What is the output of the following code: int x = 10; printf('%d', x++);?",
+        options: ["A) 10", "B) 11", "C) Undefined behavior", "D) Compiler error"],
+        answer: 0
+    },
+    {
+        question: "The purpose of the break keyword in loops or switch statements is to:",
+        options: ["A) Skip the current iteration", "B) Exit the current loop or switch block", "C) Pause the program execution", "D) Jump to the start of the loop"],
+        answer: 1
     }
 ];
 
@@ -315,7 +390,7 @@
         let currentQuestionIndex = 0;
         let userAnswers = new Array(questions.length).fill(null);
         let timer;
-        let timeLeft = 15 * 60; // 15 minutes in seconds
+        let timeLeft = 25 * 60; // 15 minutes in seconds
         let userName = localStorage.getItem('username') || '';
 
         const questionContainer = document.getElementById('questionContainer');
@@ -376,6 +451,24 @@
                 userAnswers[currentQuestionIndex] = parseInt(selectedOption.value);
             }
         }
+        // Function to monitor answered questions and apply highlighting
+document.addEventListener('DOMContentLoaded', () => {
+    const questionContainer = document.getElementById('questionContainer');
+
+    // Add event listener to detect changes in radio buttons
+    questionContainer.addEventListener('change', (event) => {
+        const target = event.target;
+
+        // Check if the change event comes from a radio button
+        if (target.type === 'radio') {
+            const questionDiv = target.closest('.question'); // Locate the parent question container
+            if (questionDiv) {
+                questionDiv.classList.add('answered'); // Add the "answered" class
+            }
+        }
+    });
+});
+
 
         function submitQuiz() {
             saveAnswer(); // Save the last answer
@@ -417,3 +510,6 @@
     </script>
 </body>
 </html>
+
+
+

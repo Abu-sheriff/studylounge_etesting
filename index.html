@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ASM Quiz Ad</title>
-    
+
     <!-- Link tag for external CSS -->
     <link rel="stylesheet" href="styles.css">
-    
+
     <!-- Link tag for favicon -->
     <link rel="icon" href="favicon.ico" type="image/x-icon">
 
@@ -21,14 +21,12 @@
             align-items: center;
             height: 100vh;
             font-family: Arial, sans-serif;
-            text-align: center; /* Center text */
         }
-        
         .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
+                text-align: center;
+                background-color: #212121;
+                padding: 40px;
+                border-radius: 12px;
         }
 
         .profile-pic {
@@ -36,18 +34,17 @@
             height: 300px;
             border-radius: 50%;
             margin-bottom: 20px;
-            object-fit: cover; /* Ensures the image fits within the circle */
-            border: none; /* Ensure no border */
+            object-fit: cover;
         }
 
         h1 {
-            font-size: 2.2em;
+            font-size: 2.5em;
             margin-bottom: 20px;
             color: #00cc00;
         }
 
         h2 {
-            font-size: 1.5em;
+            font-size: 1.8em;
             margin-bottom: 15px;
             color: #cccccc;
         }
@@ -90,20 +87,89 @@
         .quiz-button:hover {
             background-color: #004d00;
         }
+
+        /* Menu Button */
+        .menu-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #333;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            z-index: 100;
+        }
+
+        .menu-button:hover {
+            background: #444;
+        }
+
+        /* Menu Dropdown */
+        .menu-dropdown {
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background: #222;
+            color: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            display: none;
+            z-index: 99;
+        }
+
+        .menu-dropdown a {
+            display: block;
+            color: #eee;
+            text-decoration: none;
+            margin: 5px 0;
+            transition: color 0.3s ease;
+        }
+
+        .menu-dropdown a:hover {
+            color: #00cc00;
+        }
     </style>
 </head>
 <body>
+    <!-- Menu Button -->
+    <button class="menu-button" onclick="toggleMenu()">☰ Menu</button>
+    <div class="menu-dropdown" id="menuDropdown">
+        <a href="https://chat.whatsapp.com/L6l5g3hnslC5Q2xn1mgb2g" target="_blank">Join WhatsApp</a>
+        <a href="login.html">Partake in Quiz</a>
+    </div>
+
     <div class="container">
         <img src="C:\Users\Hp\Desktop\sheriff docs\ASM codes\ASM Tutorial quiz\IMG-20241111-WA0074.jpg" class="profile-pic" alt="Profile Picture">
         <h1>Welcome to The Study Lounge</h1>
-        <h2>Online exam builder</h2>
-        <p>Join our whatsapp platform to support the movement for a better NACOS #ASMforNACOSPRESIDENT2025</p>
+        <h2>Online Exam Builder</h2>
+        <p>Join our WhatsApp platform to support the movement for a better NACOS #ASMforNACOSPRESIDENT2025</p>
         <a href="https://chat.whatsapp.com/L6l5g3hnslC5Q2xn1mgb2g" target="_blank">
             <button class="link-button">ASM for NACOS PRESIDENT</button>
         </a>
         <a href="login.html">
-            <button class="quiz-button">Want to partake in Quiz</button>
+            <button class="quiz-button">Want to Partake in Quiz</button>
         </a>
     </div>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('menuDropdown');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Close menu if clicked outside
+        document.addEventListener('click', function (e) {
+            const menu = document.getElementById('menuDropdown');
+            const button = document.querySelector('.menu-button');
+            if (!menu.contains(e.target) && !button.contains(e.target)) {
+                menu.style.display = 'none';
+            }
+        });
+    </script>
 </body>
 </html>
